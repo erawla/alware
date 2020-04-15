@@ -1,0 +1,34 @@
+package week3;
+
+public class StringMethod {
+	static String addString(String s1, int index, String s2)//add string 
+	{
+		String s11=s1.substring(0,index+1);
+		String s22=s1.substring(index+1);
+		String s=s11.concat(s2);
+		String fs=s.concat(s22);
+				
+		return fs;
+	}
+	static String reverse(String s)//reverse string
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append(s);
+		
+		String fs=sb.reverse().toString();
+		
+		return fs;
+	}
+	static String removeString(String s1, String s2)//remove string
+	{
+			String fs=s1.replace(s2,"");
+			
+			return fs;
+	}
+	public static void main(String[] args)
+	{
+		System.out.println(addString("0123456",3,"-"));
+		System.out.println(reverse("abc"));
+		System.out.println(removeString("01001000","00"));
+	}
+}
