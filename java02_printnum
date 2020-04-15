@@ -1,0 +1,20 @@
+package java2;
+import java.util.Scanner;//use scan value
+
+public class printnum
+{
+	public static void main(String[] args)
+	{
+		int num;
+		Scanner sc=new Scanner(System.in);
+		num=sc.nextInt();
+		
+		String bin=Integer.toBinaryString(num);
+		String Oct=Integer.toOctalString(num);
+		String Hex=Integer.toHexString(num);//use integer class function
+
+		System.out.println("b "+bin);
+		System.out.println("O "+Oct);
+		System.out.println("h "+Hex);
+	}
+}
