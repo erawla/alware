@@ -1,0 +1,104 @@
+package week5;
+//자바프로그래밍 5주차 클래스 상속 동물 
+
+public class Animal 
+{
+   String name;
+   float weight;
+   public Animal() {}
+   
+   public Animal(String n, float w) 
+   {
+      name=n;
+      weight=w;
+   }//constructor 
+   
+   void Set(String na,float we)
+   {
+      name=na;
+      weight=we;
+   }
+   
+   public static void main(String[] args)
+   {
+      Cat c =  new Cat();
+      Dog d = new Dog();
+      c.Set("Navi",4);
+      c.meow();
+      c.breed();
+      System.out.println(c.getNumMammal());
+      d.Set("badoog", 5);
+      d.bark();
+      d.breed();
+      System.out.println(d.getNumMammal());
+   }
+      
+}
+
+abstract class Mammal extends Animal
+{
+   int numMammal;
+   
+   public int getNumMammal()
+   {
+      return numMammal;
+   }
+   public abstract void breed();
+}
+
+abstract class Reptile extends Animal
+{
+   int numReptile;
+   
+   public int getNumReptile()
+   {
+      return numReptile;
+   }
+   public abstract void spawn();
+}
+
+class Cat extends Mammal
+{
+   String nameSlave;
+   Cat() {}
+   Cat(String ns) { ns=nameSlave; }
+   
+   public void breed() 
+   {
+      numMammal=numMammal+3;
+   }
+   public void meow()
+   {
+      System.out.println(name+" : meow");
+   }
+   public void sleep()
+   {
+      System.out.println(name+" : Zzz");
+   }
+}
+
+class Dog extends Mammal
+{
+   String nameMaster; 
+   Dog() {}
+   Dog(String nm) {nm=nameMaster;} 
+   
+   
+
+   public void breed() 
+   {
+      numMammal=numMammal+5;
+   }
+   public void bark()
+   {
+      System.out.println(name+" : bowwow");
+   }
+}
+
+class Crocodile extends Reptile
+{
+   public void spawn()
+   {
+      numReptile=numReptile+20;
+   }
+}
