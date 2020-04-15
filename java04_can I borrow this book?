@@ -1,0 +1,60 @@
+package week4;
+//자바프로그래밍 4주차 borrow() return() 함수만들기
+public class week04_2019312964 
+{
+	static class Book
+	{
+		boolean state;
+		void Borrowed() { state=false; } //Borrowed 
+		void Returned() { state=true; } //Returned
+	}
+	
+	static class Library
+	{
+		Book[] book=new Book[10];
+		Library()
+		{
+			for(int i=0;i<10;i++)
+			{
+				book[i]= new Book();
+				book[i].state=true; //10books first all returned 
+			}
+		}
+		void borrowBook(int n)
+		{
+			if(book[n-1].state) 
+				{
+					book[n-1].Borrowed(); //borrowBook(int n)	
+					System.out.println(n+"th book borrow successfully.");
+				}
+			else 
+				{
+					System.out.println("You can't borrow this book.");	
+				}
+		}
+		void returnBook(int n)
+		{
+			if(book[n-1].state)
+			{
+				System.out.println("You already returned this book."); //returnBook(int n)
+			}
+			else
+			{
+				book[n-1].Returned();
+				System.out.println(n+"th book return successfully");
+			}
+		}
+		
+		//use Book[](Array)
+	}
+	
+	public static void main(String[] args)
+	{
+		/*Library sh = new Library();
+		sh.borrowBook(3);
+		sh.borrowBook(3);
+		sh.returnBook(3);
+		sh.returnBook(3);*/
+		
+	}
+}
