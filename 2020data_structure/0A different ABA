@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+
+char stack[100];
+int top=-1;
+
+void push(char a)
+{
+	stack[++top]=a;
+}
+
+char pop()
+{
+	return stack[top--];
+}
+
+int main()
+{
+	char s[100], cmp;//string array
+	int i, len, mid, cnt=0;//len is length, mid is middle of string, cnt for count
+	
+	scanf("%s",&s[0]);
+	
+	len=strlen(s);
+	mid=len/2;
+	
+	for(i=0;i<mid;i++)
+	{
+		push(s[i]);
+	}
+	//abcda(5) abccba(6)
+	if((len%2)!=0) i=mid+1;
+	else i=mid;
+	
+	while(s[i]!=NULL) 
+	{
+		cmp=pop();
+		if(s[i]!=cmp) cnt+=2;
+		i++;
+	}
+	printf("%d",cnt);
+	
+	return 0;
+}
