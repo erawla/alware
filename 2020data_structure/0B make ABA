@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <string.h>
+//aaaabbb>abababa
+
+char stack[100];
+int top=-1;
+
+void push(char a)
+{
+	//printf("%c* ",a);
+	stack[++top]=a;
+}
+
+char pop()
+{
+	printf("%c", stack[top--]);
+}
+
+int main()
+{
+	char s[100], alpha[100]={0};//string array
+	int i, j, len, mid, cnt=0;//len is length, mid is middle of string, cnt for count
+	
+	scanf("%s", &s[0]);//string
+	
+	len=strlen(s);
+	
+	for(i=0;i<len;i++)
+	{
+		//printf("%d ",s[i]);
+		cnt=s[i];
+		alpha[cnt-65]++;
+	}
+	//for(i=0;i<len;i++) printf("%d ",alpha[i]);
+	for(i=0;i<26;i++)
+	{
+		if((alpha[i]==1))
+		{
+			mid=i+'A';
+			alpha[i]--;
+		}
+	}
+	for(i=0;i<26;i++)
+	{
+		for(j=0;j<alpha[i]/2;j++)
+		{	
+			//printf("j= %d ");
+			push(i+65);	
+			alpha[j]--;
+		}
+	}
+	
+	len=strlen(stack);
+	for(i=0;i<len;i++)
+	{
+		printf("%c",stack[i]);
+	}
+	if(mid!=NULL) printf("%c",mid);
+	while(top>=0)
+	{
+		pop();
+	}
+	
+	return 0;
+}
