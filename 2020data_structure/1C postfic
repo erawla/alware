@@ -1,0 +1,198 @@
+#include <stdio.h>
+#include <string.h>
+
+//2A+05*1A-0E
+//2A051A*+OE-
+//A1
+//(40 )41 *42 +43 -45 /47
+int cnt=0;
+
+char Dec_toPenta(int a)//dec to 15-ary
+{
+	char ar[16]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E'};
+	
+	if(cnt!=0 && a<15) printf("%c", ar[a]);
+	else if(cnt==0 && a<15) printf("0%c",ar[a]);
+	else
+	{
+		cnt++;
+		Dec_toPenta(a/15);
+		printf("%c", ar[a%15]);
+	}
+}
+
+char stack[100];
+int stack1[100];
+int sumar[100]={0};
+char oper[100]={0};
+
+int cnt_dec=0;
+int cnt_oper=0;
+int top=-1;
+
+void push(int a)
+{
+	stack[++top]=a;
+}
+void push1(int a)
+{
+	stack1[++top]=a;
+}
+
+
+void pop()
+{
+	sumar[cnt_dec++]=180;
+	oper[cnt_oper++]=stack[top];
+	printf("%c", stack[top--]);
+}
+
+int calc(int *ar)
+{
+	int i=0;
+	int k=0;
+	while(k<=cnt_dec)
+	{
+		if(*ar==180)
+		{
+			char Oper = oper[i];
+    		if(Oper=='*')
+    		{
+    			//printf("%d %d",stack1[top-1],stack1[top]);
+    			stack1[top-1]=stack1[top]*stack1[top-1];
+    			top--;
+    			//printf("*%d ",stack1[top]);
+			}
+			else if(Oper=='+')
+			{
+				//printf("%d %d",stack1[top-1],stack1[top]);
+				stack1[top-1]=stack1[top]+stack1[top-1];
+				top--;
+    			//printf("+%d ",stack1[top]);
+			}
+			else if(Oper=='-')
+			{
+				//printf("%d %d",stack1[top-1],stack1[top]);
+				stack1[top-1]=stack1[top-1]-stack1[top];
+				top--;
+    			//printf("-%d ",stack1[top]);
+			}
+			else if(Oper=='/')
+			{
+				//stack1[top-1]=stack1[top-1]/stack1[top];
+				top--;
+    			//printf("/%d ",stack1[top]);
+			}
+			i++;	
+		}
+		else
+		{
+			push1(*ar);	
+		}
+		k++;
+		ar++;
+	}
+	return stack1[0];
+}	
+
+int main()
+{
+	char s[150]={0};
+	int i, len, tmp;
+	
+	scanf("%s",&s[0]);
+
+	len=strlen(s);
+	
+	for(i=0;i<len;i++)//15-ary to dec 
+	{
+		if((s[i]>=40)&&(s[i]<=47))
+		{
+			switch(s[i])//postfic in stack
+			{
+				case 40://(
+					push(40);
+					break;
+				case 41://)
+					while(1)
+					{
+						if(stack[top]=='(') break;
+						if(top<0) break; 
+						pop();
+					}
+					top--;
+					break;
+				case 42://*
+					push(42);
+					break;
+				case 47:// /
+					push(47);
+					break;
+				case 43://+
+					while(1)
+					{
+						if(stack[top]=='(') break;
+						if(top<0) break; 
+						pop();
+					}
+					push(43);
+					break;
+				case 45://-
+					while(1)
+					{
+						if(stack[top]=='(') break;
+						if(top<0) break; 
+						pop();
+					}
+					push(45);
+					break;
+			}	
+		}
+		else if((s[i+1]>=48)&&(s[i+1]<=57) || (s[i+1]>=65)&&(s[i+1]<=69))
+		{
+			if((s[i]>=48)&&(s[i]<=57)) tmp=(s[i]-48)*15;
+			else if((s[i]>=65)&&(s[i]<=69)) tmp=(s[i]-55)*15;
+		}
+		else 
+		{
+			if((s[i]>=48)&&(s[i]<=57))
+			{
+				tmp=tmp+(s[i]-48);
+				sumar[cnt_dec]=tmp;
+				Dec_toPenta(tmp);
+				cnt=0;
+				tmp=0;
+				cnt_dec++;
+			}
+			else if((s[i]>=65)&&(s[i]<=69))
+			{
+				tmp=tmp+(s[i]-55);
+				sumar[cnt_dec]=tmp;
+				Dec_toPenta(tmp);
+				cnt=0;
+				tmp=0;
+				cnt_dec++;
+			}
+		}
+	}
+	while(top>=0)
+	{
+		pop();
+	}
+	int j;
+	printf("\n");
+	
+	/*for(j=0;j<cnt_dec;j++)
+		printf("%d ",sumar[j]);
+	printf("\n");
+	for(j=0;j<cnt_oper;j++)
+		printf("%c ",oper[j]);
+	printf("\n");*/
+	
+	int sum= calc(sumar);
+	//printf("\n=%d ",sum);
+	Dec_toPenta(sum);
+
+	return 0;
+}	
+	
