@@ -1,0 +1,64 @@
+package week6;
+
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.Iterator;
+
+public class week6_2019312964 {
+	
+	public static void main(String[] args)
+	{
+		String name, num, c;
+		Scanner sc=new Scanner(System.in);
+		
+		HashMap<String, String> map=new HashMap<String, String>();//use hash map with string and string, for finding key easily
+				
+		while(true)//use infinite loop
+		{
+			c=sc.next();
+			
+			if(c.equals("show"))//show all map
+			{
+				Iterator<String> mapIter = map.keySet().iterator();//use Iterator for print all map
+				 
+		        while(mapIter.hasNext())
+		        {
+		            String key = mapIter.next();
+		            String value = map.get( key );
+		 
+		            System.out.println(key +" "+ value);//print map 
+		        }
+			}
+			else if(c.equals("find"))//find key value
+			{
+				name=sc.next();
+				System.out.println(map.get(name));//print key's value
+			}
+			else if(c.equals("add"))//add key and value in hashmap
+			{
+				name=sc.next();//scan key
+				num=sc.next();//scan value
+				boolean full=map.containsKey(name);//if already contain key in hashmap, full is true
+				if(full) System.out.println(name+" is already in contact list");//if full is true, hashmap already has key 
+				else map.put(name,num);//else put value in map
+			}
+			else if(c.equals("delete"))//delete key and value in hashmap
+			{
+				name=sc.next();//scan key
+				boolean full=map.containsKey(name);//if already contain key in hashmap, full is true
+				if(!full) System.out.println(name+" is not contained the list.");//if !full is false, hashmap already has key
+				else map.remove(name);//else remove value in map
+			}
+			else if(c.equals("end"))//end while end program
+			{
+				break;//finish program
+			}
+			else//if another command, print error
+			{
+				System.out.println("error");
+			}
+		}
+		sc.close();//close scan method
+	}
+
+}
