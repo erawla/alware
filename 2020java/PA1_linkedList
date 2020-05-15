@@ -1,0 +1,312 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Template code of "PA1.java"
+// Do not change the format of the class and method in "PA1.java"
+// Do not use java.util.LinkedList package
+
+class Node<T> {
+	T value = null;
+	
+	Node<T> prev = null;
+	Node<T> next = null;
+	
+	Node (T val) {
+		this.value = val;
+	}
+}
+
+class Linkedlist<T> {
+	Node<T> head = null;
+	Node<T> tail = null;
+	
+	void Constructor() {//Creates an empty double linked list (o)
+		head=new Node<T>(null);
+	}
+	void Constructor(T val) {//Creates a list with element ‘val’ (O)
+		head=new Node<T>(val);
+		//System.out.println(head);
+	}
+	
+	void addList(Linkedlist<T> list) {//Add ‘list’after the list (O)
+		Node<T> curNode=head;
+		while(curNode.next!=null) 
+		{
+			curNode=curNode.next;
+		}
+		tail.next=list.head;
+		list.head.prev=tail;	//테일 헤드 연결
+	}
+	
+	boolean equals(Linkedlist<T> list) {//Compare the contents of two lists. Return true if all contents and order are same (O)
+		boolean result = true;
+		Node<T> cmpOrigNode=head;
+		Node<T> cmplistNode=list.head;
+		
+		while(true)
+		{
+			if(cmpOrigNode.value!=cmplistNode.value) 
+			{
+				result=false;
+				break;
+			}
+			if(cmpOrigNode.next==null && cmplistNode.next!=null)
+			{
+				result=false;
+				break;
+			}
+			if(cmpOrigNode.next!=null && cmplistNode.next==null)
+			{
+				result=false;
+				break;
+			}
+			if(cmpOrigNode.next==null && cmplistNode.next==null) break;
+			
+			cmpOrigNode=cmpOrigNode.next;
+			cmplistNode=cmplistNode.next;
+		}
+		return result;
+	}
+	
+	int size() {//Return size of the list (O)
+		int len = 1;
+		Node<T> cntNode=head;
+		while(cntNode.next!=null)
+		{
+			len++;
+			cntNode=cntNode.next;
+		}
+		
+		return len;
+	}
+	
+	void push_back(T val) {//Push element ‘val’back of the linked list (o)
+		Node<T> newNode=new Node<T>(val);
+		
+		if(head==null) Constructor(val);
+		else if(head.value==null) head.value=val;
+		else if(head.next==null) 
+		{
+			head.next=newNode;
+			newNode.prev=head;
+			tail=newNode;
+		}
+		else
+		{
+			tail.next=newNode;
+			newNode.prev=tail;
+			tail=newNode;
+		}
+	}
+	
+	void push_front(T val) {//Push element ‘val’front of the linked list (o)
+		Node<T> newNode=new Node<T>(val);
+		
+		if(head==null) Constructor(val);
+		else if(head.value==null) head.value=val;
+		else if(head.next==null) 
+		{
+			head.prev=newNode;
+			newNode.next=head;
+			tail=head;
+			head=newNode;
+		}
+		else
+		{
+			newNode.next=head;
+			head.prev=newNode;
+			head=newNode; 
+		}
+	}
+	
+	String print_list() {
+		Node<T> tmp = this.head;
+		String res = "";
+		while(tmp != null) {
+			System.out.print(tmp.value + " ");
+			res = res + tmp.value.toString() + " ";
+			tmp = tmp.next;
+		}
+		System.out.println();
+		return res;
+	}
+	
+	T get(int n) {//Return the value of the ‘n’thelement of the list (o) N 답장오면 한번 더
+		T value = null;
+		Node<T> cnt=head;
+		int i,e=0;
+		
+		for(i=0;i<n;i++)
+		{
+			if(cnt.next==null) 
+			{
+				//System.out.println("error");//에러 출력
+				e=1;
+				break;
+			}
+			else cnt=cnt.next;
+		}
+		if(e!=1) value=cnt.value;
+		
+		return value;
+	}
+	
+	void set(int n, T val) {//Set the value of the ‘n’thelement of the list to ‘val’ (o) N 답장오면 한번 더
+		Node<T> cnt=head;
+		int i,e=0;
+		
+		for(i=0;i<n;i++)
+		{
+			if(cnt.next==null) 
+			{
+				//System.out.println("error");//에러 출력
+				e=1;
+				break;
+			}
+			else cnt=cnt.next;
+		}
+		if(e!=1) cnt.value=val;
+	}
+	
+	void add(int n, T val) {//Add new node at index ‘n’ (o) N 답장오면 한번 더
+		Node<T> cnt=head;
+		Node<T> addNode=new Node<T>(val);
+		int i,e=0;
+		
+		for(i=0;i<n;i++)
+		{
+			if(cnt.next==null) 
+			{
+				//System.out.println("error");//에러 출력
+				e=1;
+				break;
+			}
+			else cnt=cnt.next;
+		}
+		if(e!=1)
+		{
+			addNode.prev=cnt.prev;
+			cnt.prev=addNode;
+			addNode.prev.next=addNode;
+			addNode.next=cnt;
+		}
+	}
+	
+	void erase (int n) {//Erase and delete the node at index ‘n’ (o) N 답장오면 한번 더
+		Node<T> cnt=head;
+		int i,e=0;
+		
+		for(i=0;i<n;i++)
+		{
+			if(cnt.next==null) 
+			{
+				//System.out.println("error");//에러 출력
+				e=1;
+				break;
+			}
+			else cnt=cnt.next;
+		}
+		if(e!=1)
+		{
+			cnt.next.prev=cnt.prev;
+			cnt.prev.next=cnt.next;
+			cnt.next=null;
+			cnt.prev=null;
+		}
+	}
+
+	void pop_back() {//Pop ‘val’from back of the linked list
+		Node<T> curNode=tail;
+		//Node<T> preNode=null;
+		
+		if(head==null) return;
+		if(head.value==null) return;
+		if(head.value!=null)
+		{
+			tail=curNode.prev;
+			tail.next=null;
+			curNode.prev=null;
+		}
+	}
+	void pop_front() {//Pop ‘val’from front of the linked list
+		Node<T> curNode=head;
+		//Node<T> nextNode=null;
+		
+		if(head==null) return;
+		if(head.value==null) return;
+		if(head.value!=null)
+		{	
+			head=curNode.next;
+			head.prev=null;
+			curNode.next=null;
+		}
+	}
+	  
+	List<Linkedlist<T>> split(T val) {
+		int cnt=0, cnt1=0;
+		Node<T> curNode=head;
+		Node<T> insertNode=head;
+		List<Linkedlist<T>> arr = new ArrayList<Linkedlist<T>>();
+		
+		while(curNode.next!=null)
+		{
+			if(curNode==head);
+			else if(curNode.prev.value==val && curNode.value!=val) cnt1++;
+			curNode=curNode.next;
+		}
+		
+
+		if(head.value!=val) cnt=1; 
+		
+		while(curNode.next!=null)
+		{
+			if(curNode==head);
+			else if(curNode.prev.value==val && curNode.value!=val) cnt++;
+			curNode=curNode.next;
+		}
+		if(curNode.prev.value==val && curNode.value!=val) cnt++;
+		//System.out.println("cnt="+cnt);
+		while(true)
+		{
+			if(insertNode.value==val) insertNode=insertNode.next;
+			else break;
+		}
+		for(int i=0;i<cnt;i++)
+		{
+			Linkedlist<T> splitlist =new Linkedlist<T>();
+			splitlist.head=insertNode;
+			while(insertNode.next!=null)
+			{
+				if(insertNode.next.value==val)
+				{
+					break;
+				}
+				insertNode=insertNode.next;
+			}
+			splitlist.tail=insertNode;
+			if(insertNode.next!=null) insertNode=insertNode.next;
+			while(true)
+			{
+				
+				if(insertNode.value==val && insertNode.next!=null) insertNode=insertNode.next;
+				else break;
+			}
+			
+			splitlist.tail.next=null;
+			splitlist.head.prev=null;
+			//splitlist.print_list();
+			arr.add(splitlist);
+		}
+		return arr;
+	}
+}
+
+
+
+public class PA1 {
+	public static void main(String[] args) {
+		// example of using Linkedlist with generic type
+		Linkedlist<Integer> list = new Linkedlist<Integer>(); 
+		
+	}
+}
