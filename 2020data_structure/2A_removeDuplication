@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct _Node
+{
+	int data;
+	struct _Node* next;
+}Node;
+
+void printList(Node* head)
+{
+	Node* ptr = head;
+	while (ptr)
+	{
+		printf("%d ", ptr->data);
+		printf("-> ");
+		ptr = ptr->next;
+	}		
+	printf("NULL");
+	printf("\n");
+}
+
+void push(Node** head, int data)
+{
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+	newNode->next = *head;
+	*head = newNode;
+}
+
+void Remove(Node* head)
+{
+	//Node* first=head; 
+	Node* tmp=head;
+	Node* ptr;
+
+ 	while(head != NULL)
+ 	{
+  		ptr = head->next;
+  		while(ptr!= NULL)
+  		{	
+   			if(head->data == ptr->data)
+   			{
+    			tmp->next = ptr->next;
+   			 	free(ptr);
+   				ptr = tmp->next;
+   			}
+   			else
+   			{
+    			ptr = ptr->next;
+    			tmp = tmp->next;
+   			}
+  		}
+  		head = head->next;
+  		tmp = head;
+ 	}
+}
+
+int main()
+{
+	int N, list[100], i;
+	scanf("%d", &N);
+	for(i=0; i<N; i++)
+	scanf("%d", &list[i]);
+	Node* head = NULL;
+	
+	for (i = N-1; i >= 0; i--) push(&head, list[i]);
+	
+	printList(head);
+	Remove(head);
+	printList(head);
+	
+	return 0;
+}
