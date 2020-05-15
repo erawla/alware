@@ -1,0 +1,227 @@
+#include <stdio.h>  
+#include <stdlib.h>  
+#include <string.h>
+#include <math.h>
+   
+
+typedef struct NODE
+{  
+    float coef; //계수 
+    int expo; //지수 
+    struct Node* next;  
+}Node;  
+  
+typedef struct HEAD
+{  
+	Node* head;  
+}HEAD;  
+ 
+HEAD* polynomials(void) 
+{  
+  	HEAD* L; 
+    L = (HEAD*)malloc(sizeof(HEAD));
+    L->head = NULL; 
+    return L;  
+}  
+  
+void addNode(HEAD* L, float coef, int expo)//노드 추가 
+{ 
+    Node* newNode;  
+    Node* p;  
+    newNode = (Node*)malloc(sizeof(Node));
+    newNode->coef = coef;  
+    newNode->expo = expo;  
+    newNode->next = NULL; 
+    if(L->head == NULL)//첫노드 
+	{  
+        L->head = newNode;  
+        return;  
+    }  
+    else 
+	{  
+        p = L->head;  
+        while(p->next != NULL) 
+		{  
+        p = p->next;  //마지막 노드 
+        }  
+        p->next = newNode;  
+    }  
+}  
+   
+void addPoly(HEAD* A, HEAD* B, HEAD* C)
+{ 
+    Node* pA = A->head; 
+    Node* pB = B->head;  
+    float sum;  
+   
+    while(pA && pB)
+	{  
+        if(pA->expo == pB->expo)
+		{  
+            sum = pA->coef + pB->coef;  
+            addNode(C, sum, pA->expo);  
+            pA=pA->next; pB=pB->next;  
+        }  
+        else if(pA->expo > pB->expo)
+		{
+             addNode(C, pA->coef, pA->expo);  
+            pA=pA->next;  
+        }  
+        else
+		{  
+            addNode(C, pB->coef, pB->expo);  
+            pB=pB->next;  
+        }  
+    }  
+    for( ; pA!=NULL; pA=pA->next)  
+        addNode(C, pA->coef, pA->expo);  
+    for( ; pB!=NULL; pB=pB->next)  
+        addNode(C, pB->coef, pB->expo);  
+ }  
+   
+void printPoly(HEAD* L) 
+{  
+	int n=0;
+    Node* p = L->head;  
+    for(;p;p=p->next)
+	{  
+		if(n==0) 
+		{
+			printf("%.fx^%d", p->coef, p->expo);
+			n++;
+		}
+        else if((p->coef)>0)
+		{
+			printf("+%.fx^%d", p->coef, p->expo);
+			n++;
+		}
+        else
+		{
+			printf("%.fx^%d", p->coef, p->expo);
+			n++;
+		}
+    }  
+}  
+void make_coe(char* str, int* coe)
+{
+	int n=0, i=0, j, k=0;
+	while(str[n]!=NULL)
+	{
+		//printf("c");
+		if(str[n]=='x')
+		{
+			for(j=1;;j++)
+			{
+				if(str[n-j]=='-') 
+				{
+					coe[i]=-coe[i];
+					break;
+				}
+				else if(str[n-j]>=48 && str[n-j]<=57)
+				{
+					//printf("str[%d-%d]=%d",n,j, str[n-j]-'0');
+					coe[i]=coe[i]+(str[n-j]-'0')*pow(10,k);
+					//printf("coe[%d]=%d ",i,coe[i]);
+					k++;
+				}
+				else break;
+			}
+			i++;
+			k=0;
+		}
+		n++;
+	}
+	//printf("coe\n");
+}
+void make_exp(char* str, int* exp)
+{
+	int n=0, i=0;
+	while(str[n]!=NULL)
+	{
+		if(str[n-1]=='^')
+		{
+			exp[i]=str[n]-'0';
+			//printf("%d ",exp[i]);
+			i++;
+		} 
+		n++;
+	}
+	//printf("exp\n");
+}
+
+void make_poly(HEAD* N, int* coe, int* exp)
+{
+	int i=0;
+	while(1)
+	{
+		//printf("%d %d", coe[i], exp[i]);
+		if(coe[i]==0 && exp[i]==0) break;
+		addNode(N, coe[i],exp[i]);
+		i++;
+	}
+}
+
+void main(void)
+{
+	int i=0;
+   	HEAD *A, *B, *C;
+   	char strA[100], strB[100];
+   	int coe_A[12]={0}, exp_A[12]={0};
+	int coe_B[12]={0}; 
+	int exp_B[12]={0}; 
+	
+   	scanf("%s",strA);
+   	scanf("%s",strB);
+   	
+   	make_coe(strA,coe_A);
+   	make_exp(strA,exp_A);
+	
+   	make_exp(strB,exp_B);
+   	//make_coe(strB,coe_B);
+   	
+   	int n=0, j, k=0;
+   	i=0;
+	while(strB[n]!=NULL)
+	{
+		//printf("c");
+		if(strB[n]=='x')
+		{
+			for(j=1;;j++)
+			{
+				if(strB[n-j]=='-') 
+				{
+					coe_B[i]=-coe_B[i];
+					break;
+				}
+				if(strB[n-j]>=48 && strB[n-j]<=57)
+				{
+					//printf("str[n-%d]=%d",j, str[n-j]-'0');
+					coe_B[i]=coe_B[i]+(strB[n-j]-'0')*pow(10,k);
+					//printf("coe[%d]=%d ", i, coe_B[i]);
+					k++;
+				}
+				else break;
+			}
+			i++;
+			k=0;
+		}
+		n++;
+	}
+   	
+   	
+    A = polynomials();  
+    B = polynomials();  
+    C = polynomials();  
+    
+    make_poly(A,coe_A,exp_A);
+   // printPoly(A);
+    //printf("*");
+    make_poly(B,coe_B,exp_B);
+    //printPoly(B);
+    
+    addPoly(A,B,C);
+    
+    printPoly(C);
+    
+    return 0;
+}  
