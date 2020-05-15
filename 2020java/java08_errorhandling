@@ -1,0 +1,115 @@
+package week8;
+
+import java.util.Scanner;
+
+public class week8_2019312964 {
+	@SuppressWarnings("serial")
+	static class OutOfRangeException extends Exception{
+		public OutOfRangeException( ) {}
+		public OutOfRangeException(String msg) {
+			super(msg);
+		}
+	}
+	@SuppressWarnings("serial")
+	static class AddZeroException extends Exception{
+		public AddZeroException() {}
+		public AddZeroException(String msg) {
+			super(msg);
+		}
+	}
+	@SuppressWarnings("serial")
+	static class SubtractZeroException extends Exception{
+		public SubtractZeroException() {}
+		public SubtractZeroException(String msg) {
+			super(msg);
+		}
+	}
+	static class Check_plus{
+		public int a;
+	
+		public Check_plus() {}
+		public void error_PLUS(int a) throws AddZeroException{
+			if(a==0) throw new AddZeroException("AddZeroException");
+		}
+		public void error_(int a) throws OutOfRangeException{
+			if(a>1000 || a<0) throw new OutOfRangeException("OutOfRangeException");
+		}
+	}
+	static class Check_minus{
+		public int a;
+		
+		public Check_minus() {}
+		public void error_MINUS(int a) throws SubtractZeroException{
+			if(a==0) throw new SubtractZeroException("SubtractZeroException");
+		}
+		public void error_(int a) throws OutOfRangeException{
+			if(a>1000 || a<0) throw new OutOfRangeException("OutOfRangeException");
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+		String str;
+		Scanner sc=new Scanner(System.in);
+		int a,b,result;
+		Check_plus cp=new Check_plus();
+		Check_minus cm=new Check_minus();
+		
+		str=sc.nextLine();
+		
+		if(str.contains("+"))
+		{
+			String[] array =str.split("\\+");
+			
+			
+			a=Integer.parseInt(array[0]);
+			b=Integer.parseInt(array[1]);
+			
+			try {
+				cp.error_PLUS(a);
+				cp.error_PLUS(b);
+				cp.error_(a);
+				cp.error_(b);
+				result=a+b;
+				cp.error_(result);
+				System.out.println(result);
+			}
+			catch(AddZeroException e1) {
+				String msg=e1.getMessage();
+				System.out.println(msg+"\n");
+			}
+			catch(OutOfRangeException e2) {
+				String msg=e2.getMessage();
+				System.out.println(msg+"\n");
+			}
+		}
+		else if(str.contains("-"))
+		{
+			String[] array=str.split("-");
+			
+			a=Integer.parseInt(array[0]);
+			b=Integer.parseInt(array[1]);
+			
+			try {
+				cm.error_MINUS(a);
+				cm.error_MINUS(b);
+				cm.error_(a);
+				cm.error_(b);
+				result=a-b;
+				cm.error_(result);
+				System.out.println(result);
+			}
+			catch(SubtractZeroException e1) {
+				String msg=e1.getMessage();
+				System.out.println(msg+"\n");
+			}
+			catch(OutOfRangeException e2) {
+				String msg=e2.getMessage();
+				System.out.println(msg+"\n");
+			}
+		}
+		
+		
+	}
+
+}
